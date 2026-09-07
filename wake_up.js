@@ -141,21 +141,26 @@ async function runWakeUp() {
     console.log('开始自动唤醒');
     console.log('==========================================\n');
 
-    const messages = loadTimelineMessages();
-    console.log(`📊 加载到 ${messages.length} 条消息`);
+const messages = loadTimelineMessages();
+console.log(`📊 加载到 ${messages.length} 条消息`);  // ← 改成反引号
 
-    if (!messages || messages.length === 0) {
-        console.log('没有消息记录，跳过唤醒');
-        return;
-    }
+if (!messages || messages.length === 0) {
+    console.log('没有消息记录，跳过唤醒');
+    return;
+}
 
-    const lastUserTime = getLastUserTime(messages);
-    if (!lastUserTime) {
-        console.log('❌ 未找到用户时间');
-        return;
-    }
-    console.log(`✅ 用户最后消息时间: ${new Date(lastUserTime).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}`);
+// 👇 新增：打印第一条消息的结构
+if (messages.length > 0) {
+    console.log('📝 第一条消息:', JSON.stringify(messages[0]));
+}
 
+const lastUserTime = getLastUserTime(messages);
+if (!lastUserTime) {
+    console.log('❌ 未找到用户时间');
+    return;
+}
+
+console.log(`✅ 用户最后消息时间：${new Date(lastUserTime).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}`);  // ← 改成反引号
     const lastAITime = getLastAITime(messages);
     if (!lastAITime) {
         console.log('❌ 未找到 AI 回复时间');
