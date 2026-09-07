@@ -405,6 +405,15 @@ async function runWakeUp() {
   console.log("开始自动唤醒");
   console.log("==========================\n");
 
+  const messages = loadTimelineMessages();
+  if (!messages) return;
+
+  const lastUserTime = getLastUserTime(messages);
+  if (!lastUserTime) {
+    console.log("未找到用户时间");
+    return;
+  }
+
   const now = new Date();
   const diffMinutes = Math.floor((now - lastUserTime) / 1000 / 60);
 
