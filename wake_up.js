@@ -615,16 +615,14 @@ function getCheckIntervalMs() {
 }
 
 async function scheduleNextCheck() {
-  try {
-    // 发送心跳
     try {
-      await fetch(HEARTBEAT_URL, { method: "POST" });
-    } catch {}
-    await runWakeUp();
-  } catch (err) {
-    console.error("唤醒检查出错:", err);
-  }
-  setTimeout(scheduleNextCheck, getCheckIntervalMs());
+        // 发送心跳
+        await fetch(HEARTBEAT_URL, { method: "POST" });
+    } catch (e) {
+        console.error("唤醒检查出错：", e);
+        await runWakeUp();
+    }
+    setTimeout(scheduleNextCheck, getCheckIntervalMs());
 }
 
 // 潮水记得第一次没过礁石的时间。之后每一次涨落，都是同一片海在确认边界。
