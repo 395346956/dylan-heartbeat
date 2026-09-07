@@ -349,6 +349,7 @@ function getLastUserTime(messages) {
       // 旧的 "YYYY-MM-DD HH:mm" 仍然可用，避免无空格时间导致 wake-up 误判没有用户时间。
       const parsed = parseTimelineTimestamp(content);
       if (parsed) return parsed;
+      if (msg.created_at) return new Date(msg.created_at).getTime();
     }
   }
   return null;
@@ -403,29 +404,6 @@ async function runWakeUp() {
   console.log("\n==========================");
   console.log("开始自动唤醒");
   console.log("==========================\n");
-
-  // 主动发送测试推送（临时测试用）
-const testPayload = {
-    title: "🧪 唤醒测试",
-    body: `当前时间：${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}，唤醒服务运行正常！`,
-    device_key: process.env.BARK_KEY,
-    icon: process.env.CUSTOM_ICON_URL
-};
-
-await fetch("https://api.day.app/push", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(testPayload)
-});
-  
-  const messages = loadTimelineMessages();
-  if (!messages) return;
-
-  const lastUserTime = getLastUserTime(messages);
-  if (!lastUserTime) {
-    console.log("未找到用户时间");
-    return;
-  }
 
   const now = new Date();
   const diffMinutes = Math.floor((now - lastUserTime) / 1000 / 60);
