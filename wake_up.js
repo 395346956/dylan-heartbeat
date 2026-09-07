@@ -404,6 +404,20 @@ async function runWakeUp() {
   console.log("开始自动唤醒");
   console.log("==========================\n");
 
+  // 主动发送测试推送（临时测试用）
+const testPayload = {
+    title: "🧪 唤醒测试",
+    body: `当前时间：${new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}，唤醒服务运行正常！`,
+    device_key: process.env.BARK_KEY,
+    icon: process.env.CUSTOM_ICON_URL
+};
+
+await fetch("https://api.day.app/push", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(testPayload)
+});
+  
   const messages = loadTimelineMessages();
   if (!messages) return;
 
