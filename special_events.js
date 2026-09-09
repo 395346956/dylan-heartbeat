@@ -7,16 +7,3 @@ function isSpecialEventContent(content) {
 }
 
 module.exports = { isSpecialEventContent, SPECIAL_EVENT_PREFIX };
-module.exports = [
-    {
-        date: '09-10',
-        title: '教师节快乐！',
-        message: '今天是教师节，致敬每一位老师！'
-    },
-    {
-        date: '08-03',
-        title: '生日快乐！',
-        message: '祝你永远自由！'
-    },
-    // ... 更多事件
-];
